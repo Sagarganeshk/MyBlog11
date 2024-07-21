@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Dashboard</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            /* Background image setup */
+            background-image: url('{% static "images/images.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            margin-top: 50px;
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: block;
+            width: 150px;
+            margin: 0 auto 15px auto;
+            font-weight: 700;
+        }
+
+        .table {
+            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .table tbody tr {
+            background-color: #ffffff;
+            transition: all 0.3s;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr td {
+            padding: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table tbody tr td:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .table tbody tr td:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .btn-sm {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+    <div class="container">
+        <h1>User Dashboard</h1>
+        <a href="{% url 'post_list' %}" class="btn btn-primary mb-3">View Posts</a>
+        <a href="{% url 'post_new' %}" class="btn btn-primary mb-3">Post New</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in user_posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td class="post-content">{{ post.content }}</td>
+                    <td>
+                        <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-info btn-sm">Edit</a>
+                        <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">You have not created any posts yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

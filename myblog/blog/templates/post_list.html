@@ -1,0 +1,126 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Posts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+            background-image: url('{% static "images/postimg.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Keeps the background image fixed as the user scrolls */
+        }
+
+        h1 {
+            margin-top: 20px;
+            text-align: center;
+            color: #343a40;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+            color: #007bff;
+            font-weight: 700;
+        }
+
+        .card-text {
+            color: #6c757d;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .container {
+            margin-top: 30px;
+            max-width: 800px;
+            position: relative; /* Ensure container is positioned relative for absolute positioning of the button */
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+
+        .small {
+            display: block;
+            margin-top: 10px;
+            color: #6c757d;
+        }
+
+        .no-posts {
+            text-align: center;
+            color: #dc3545;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .home-btn {
+             position: fixed; /* Keeps the button fixed even when scrolling */
+             top: 20px;
+              right: 20px;
+              font-size: 1rem;
+             font-weight: 700;
+             z-index: 1000; /* Ensure the button appears above other content */
+        }
+
+
+        .card-img {
+            max-width: 100%; /* Ensure image fits within the card */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blog Posts</h1>
+       
+        {% for post in posts %}
+            <div class="card mb-3">
+                
+                <div class="card-body">
+                    <h2 class="card-title">{{ post.title }}</h2>
+                    <p class="card-text">{{ post.content }}</p>
+                    <p class="card-text"><small>Author: {{ post.author }}</small></p>
+                    <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        {% empty %}
+            <p class="no-posts">No posts yet.</p>
+        {% endfor %}
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary home-btn">Home</a>
+</body>
+</html>

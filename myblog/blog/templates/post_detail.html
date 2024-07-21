@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            background-image: url('{% static "images/details.jpg" %}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Ensures the background image stays fixed as the user scrolls */
+            filter: brightness(80%); /* Adjust brightness for clarity */
+            position: relative; /* Set body as relative for absolute positioning */
+        }
+
+        .container {
+            margin-top: 100px; /* Adjusted top margin */
+            margin-bottom: 50px; /* Adjusted bottom margin */
+            padding: 30px; /* Increased padding for content */
+            background-color: rgba(255, 255, 255, 0.8); /* Transparent background color for container */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            color: #333; /* Text color */
+            position: relative; /* Set container as relative for absolute positioning */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            margin-top: 20px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9); /* Background color for comments */
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-text {
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" class="img-fluid mb-4" alt="Post Image"> <!-- Assuming post.image is a Django ImageField -->
+        {% endif %}
+        <p>{{ post.content }}</p>
+        <p>Author: {{ post.author }}</p>
+        <hr>
+        <h3>Comments</h3>
+        {% for comment in comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="card-text">{{ comment.content }}</p>
+                    <p class="card-text"><small>By: {{ comment.author }}</small></p>
+                    <small>{{ comment.created_at }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+        <hr>
+        <h3>Add a Comment</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Add Comment</button>
+        </form>
+    </div>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary home-btn">Home</a>
+</body>
+</html>
